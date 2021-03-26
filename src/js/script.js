@@ -95,27 +95,16 @@
     initAcordion(){
       const thisProduct = this;
 
-      const clickableTrigger = document.querySelectorAll(select.menuProduct.clickable);
+      const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
 
-      for(let click of clickableTrigger){
-        click.addEventListener('click', function(event){
-          event.preventDefault();
-          event.stopImmediatePropagation();
-          event.stopPropagation();
-          console.log('click');
-          thisProduct.element.classList.toggle(classNames.menuProduct.wrapperActive);
-
-          const allActiveProducts = document.querySelectorAll(classNames.menuProduct.wrapperActive);
-
-          for(let active of allActiveProducts){
-            if (active !== thisProduct){
-              active.classList.remove(classNames.menuProduct.wrapperActive);
-            }
-          }
-
-
-        });
-      }
+      clickableTrigger.addEventListener('click', function(event){
+        event.preventDefault();
+        const activeProduct = document.querySelector(classNames.menuProduct.wrapperActive);
+        if (activeProduct && activeProduct !== thisProduct){
+          activeProduct.classList.remove(classNames.menuProduct.wrapperActive);
+        }
+        thisProduct.element.classList.toggle(classNames.menuProduct.wrapperActive);
+      });
     }
 
     initOrderForm(){
@@ -155,13 +144,15 @@
           // check if there is param with a name of paramId in formData and if it includes optionId
           if(formData[paramId] && formData[paramId].includes(optionId)) {
             // check if the option is not default
-            if(price) {
+            if(!option.default) {
             // add option price to price variable
+            price = price + option.price;
             }
           } else {
             // check if the option is default
-            if(price) {
+            if(option.default) {
               // reduce price variable
+            price = price - option.price;
             }
           }
         }
