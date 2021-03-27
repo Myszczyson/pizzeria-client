@@ -66,8 +66,6 @@
       thisProduct.initAcordion();
 
       thisProduct.initOrderForm();
-
-      console.log('new Product:', thisProduct);
     }
 
     renderInMenu(){
@@ -90,6 +88,7 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
     }
 
     initAcordion(){
@@ -128,7 +127,6 @@
 
     processOrder(){
       const thisProduct = this;
-      console.log();
 
       const formData = utils.serializeFormToObject(thisProduct.form);
 
@@ -139,20 +137,29 @@
 
         for(let optionId in param.options) {
           const option = param.options[optionId];
-          console.log(optionId, option);
-
           // check if there is param with a name of paramId in formData and if it includes optionId
-          if(formData[paramId] && formData[paramId].includes(optionId)) {
+          const optionSelected = formData[paramId] && formData[paramId].includes(optionId);
+          if(optionSelected) {
             // check if the option is not default
             if(!option.default) {
             // add option price to price variable
-            price = price + option.price;
+              price = price + option.price;
             }
           } else {
             // check if the option is default
             if(option.default) {
               // reduce price variable
-            price = price - option.price;
+              price = price - option.price;
+            }
+          }
+          const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
+          if(optionImage){
+            if(optionSelected){
+              optionImage.classList.add(classNames.menuProduct.imageVisible)
+            } else {
+              if(!optionSelected){
+                optionImage.classList.remove(classNames.menuProduct.imageVisible)
+              }
             }
           }
         }
@@ -164,8 +171,6 @@
   const app = {
     initMenu: function(){
       const thisApp = this;
-
-      console.log('thisApp.data:', thisApp.data);
 
       for(let productData in thisApp.data.products){
         new Product(productData, thisApp.data.products[productData]);
