@@ -155,10 +155,10 @@
           const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
           if(optionImage){
             if(optionSelected){
-              optionImage.classList.add(classNames.menuProduct.imageVisible)
+              optionImage.classList.add(classNames.menuProduct.imageVisible);
             } else {
               if(!optionSelected){
-                optionImage.classList.remove(classNames.menuProduct.imageVisible)
+                optionImage.classList.remove(classNames.menuProduct.imageVisible);
               }
             }
           }
