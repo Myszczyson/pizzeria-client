@@ -3,7 +3,6 @@ import { settings, select } from '../settings.js';
 class AmountWidget {
   constructor(element) {
     const thisWidget = this;
-    console.log(element)
     thisWidget.getElements(element);
     if (thisWidget.input.value) {
       thisWidget.setValue(thisWidget.input.value);
@@ -20,7 +19,6 @@ class AmountWidget {
     thisWidget.input = thisWidget.element.querySelector(
       select.widgets.amount.input
     );
-    console.log(select.widgets.amount.input)
     thisWidget.linkDecrease = thisWidget.element.querySelector(
       select.widgets.amount.linkDecrease
     );
