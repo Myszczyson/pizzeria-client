@@ -52,8 +52,7 @@ class CartProduct {
     );
 
     thisCartProduct.dom.amountWidget.addEventListener('updated', function () {
-      thisCartProduct.price =
-        thisCartProduct.amountWidget.value * thisCartProduct.priceSingle;
+      thisCartProduct.price = thisCartProduct.amountWidget.value * thisCartProduct.priceSingle;
       thisCartProduct.amount = thisCartProduct.amountWidget.value;
       thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
     });
