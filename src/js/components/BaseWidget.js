@@ -32,7 +32,7 @@ class BaseWidget{
   setValue(value) {
     const thisWidget = this;
 
-    thisWidget.value = value
+    thisWidget.value = value;
   }
 
   parseValue(value){
