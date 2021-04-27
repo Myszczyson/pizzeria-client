@@ -5,7 +5,7 @@ import DatePicker from './DatePicker.js';
 import HourPicker from './HourPicker.js';
 
 class Booking {
-  constructor (element){
+  constructor (element){  // need to add another variable to store clicked tables ID
     const thisBooking = this;
 
     thisBooking.render(element);
@@ -16,8 +16,8 @@ class Booking {
   getData(){
     const thisBooking = this;
 
-    const startDateParam = settings.db.dateStartParamKey + '=' + utils.dateToStr(thisBooking.dom.dateWrapperWidget.minDate);
-    const endDateParam = settings.db.dateEndParamKey + '=' + utils.dateToStr(thisBooking.dom.dateWrapperWidget.maxDate);
+    const startDateParam = settings.db.dateStartParamKey + '=' + utils.dateToStr(thisBooking.dateWrapperWidget.minDate);
+    const endDateParam = settings.db.dateEndParamKey + '=' + utils.dateToStr(thisBooking.dateWrapperWidget.maxDate);
 
     const params = {
       booking: [
@@ -77,8 +77,8 @@ class Booking {
       thisBooking.makeBooked(item.date, item.hour, item.duration, item.table);
     }
 
-    const minDate = thisBooking.dom.dateWrapperWidget.minDate;
-    const maxDate = thisBooking.dom.dateWrapperWidget.maxDate;
+    const minDate = thisBooking.dateWrapperWidget.minDate;
+    const maxDate = thisBooking.dateWrapperWidget.maxDate;
 
     for(let item of eventsRepeat){
       if(item.repeat == 'daily'){
@@ -111,8 +111,8 @@ class Booking {
   updateDOM(){
     const thisBooking = this;
 
-    thisBooking.date = thisBooking.dom.dateWrapper.value;
-    thisBooking.hour = thisBooking.dom.hourInput.value; // bylo utils.hourToNumber(this.booking.dom.hourWrapper.value) ale wyskakiwal bład
+    thisBooking.date = thisBooking.dateWrapperWidget.value;
+    thisBooking.hour = thisBooking.dom.hourInput.value;
 
     let allAvailable = false;
 
@@ -125,14 +125,14 @@ class Booking {
     }
 
     for(let table of thisBooking.dom.tables){
-      let tableId = table.getAttribute(settings.bookingTable.tableIdAttribute); // musialem zmienic settings.booking na settings.bookingTable bo mi wywala blad w Eslint
+      let tableId = table.getAttribute(settings.bookingTable.tableIdAttribute);
       if(!isNaN(tableId)){
         tableId = parseInt(tableId);
       }
       if(
         !allAvailable
         &&
-        thisBooking.booked[thisBooking.date][thisBooking.hour].includes(tableId) //* tutaj cos nie dziala
+        thisBooking.booked[thisBooking.date][thisBooking.hour].includes(tableId)
       ){
         table.classList.add(classNames.booking.tableBooked);
       } else {
@@ -141,7 +141,7 @@ class Booking {
     }
   }
 
-  render(element){
+  render(element){ // need to add another variable to store clicked tables ID
     const thisBooking = this;
     const generatedHTML = templates.bookingWidget();
 
@@ -155,10 +155,13 @@ class Booking {
     thisBooking.dom.hoursAmount = thisBooking.dom.wrapper.querySelector(select.booking.hoursAmount);
 
     thisBooking.dom.dateWrapper = thisBooking.dom.wrapper.querySelector(select.datePicker.wrapper);
-    thisBooking.dom.hourWrapper = thisBooking.dom.wrapper.querySelector(select.hourPicker.wrapper);
-    thisBooking.dom.hourInput = thisBooking.dom.wrapper.querySelector(select.hourPicker.input);
 
-    thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables)
+    thisBooking.dom.hourWrapper = thisBooking.dom.wrapper.querySelector(select.hourPicker.wrapper);
+    thisBooking.dom.hourInput = document.querySelector(select.hourPicker.input);
+
+    thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
+
+    thisBooking.dom.allTables = thisBooking.dom.wrapper.querySelector(select.booking.tableDiv);
   }
 
   initWidgets(){
@@ -172,7 +175,7 @@ class Booking {
 
     });
 
-    thisBooking.dom.hoursWidget = new AmountWidget(
+    thisBooking.hoursWidget = new AmountWidget(
       thisBooking.dom.hoursAmount
     );
 
@@ -180,7 +183,7 @@ class Booking {
 
     });
 
-    thisBooking.dom.dateWrapperWidget = new DatePicker(
+    thisBooking.dateWrapperWidget = new DatePicker(
       thisBooking.dom.dateWrapper
     );
 
@@ -188,7 +191,7 @@ class Booking {
 
     });
 
-    thisBooking.dom.hourWrapperWidget = new HourPicker(
+    thisBooking.hourWrapperWidget = new HourPicker(
       thisBooking.dom.hourWrapper
     );
 
@@ -198,8 +201,18 @@ class Booking {
 
     thisBooking.dom.wrapper.addEventListener('updated', function(){
       thisBooking.updateDOM();
-    })
+    });
+
+    thisBooking.dom.allTables.addEventListener('click', function(){
+      thisBooking.initTables();
+    });
   }
+
+  // // initTables(){
+  // //   //const thisBooking = this;
+
+
+  // }
 }
 
 export default Booking;
