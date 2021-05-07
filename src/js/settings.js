@@ -9,6 +9,7 @@ export const select = {
     cart: '#cart',
     pages: '#pages',
     booking: '.booking-wrapper',
+    home: '.home-page'
   },
   all: {
     menuProducts: '#product-list > .product',
@@ -71,7 +72,7 @@ export const select = {
     form: '.booking-form'
   },
   nav: {
-    links: '.main-nav a',
+    links: '.main-nav a, .panel a',
   },
   // CODE ADDED END
 };

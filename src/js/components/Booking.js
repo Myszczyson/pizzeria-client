@@ -172,9 +172,9 @@ class Booking {
     thisBooking.dom.phone = thisBooking.dom.wrapper.querySelector(select.booking.phone);
     thisBooking.dom.address = thisBooking.dom.wrapper.querySelector(select.booking.address);
 
-    thisBooking.dom.starters = thisBooking.dom.wrapper.querySelectorAll(select.booking.starters)
+    thisBooking.dom.starters = thisBooking.dom.wrapper.querySelectorAll(select.booking.starters);
 
-    thisBooking.dom.form = thisBooking.dom.wrapper.querySelector(select.booking.form)
+    thisBooking.dom.form = thisBooking.dom.wrapper.querySelector(select.booking.form);
   }
 
   initWidgets(){
@@ -284,9 +284,9 @@ class Booking {
         return response.json();
       })
       .then(function (parsedResponse) {
-        console.log(parsedResponse)
+        console.log(parsedResponse);
         thisBooking.makeBooked(parsedResponse.date, parsedResponse.hour, parsedResponse.duration, parsedResponse.table);
-        thisBooking.updateDOM()
+        thisBooking.updateDOM();
       });
   }
 }
