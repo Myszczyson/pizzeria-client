@@ -1,1 +1,1 @@
-https://afternoon-badlands-97699.herokuapp.com/
+https://pizzeria-client.herokuapp.com/
